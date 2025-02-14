@@ -1,24 +1,29 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-let initialized = false;
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable");
+}
+
+let cached = global.mongoose || { conn: null, promise: null };
 
 export const connect = async () => {
-  mongoose.set('strictQuery', true);
+  if (cached.conn) return cached.conn;
 
-  if (initialized) {
-    console.log('MongoDB already connected');
-    return;
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(MONGODB_URI, {
+        dbName: "next-estate",
+        useNewUrlParser: true,
+      })
+      .then((mongoose) => {
+        return mongoose;
+      });
   }
 
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'next-estate',
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    initialized = true;
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.log('MongoDB connection error:', error);
-  }
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
+
+global.mongoose = cached;
