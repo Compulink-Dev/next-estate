@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import ListingItem from "../../components/ListingItem";
+import ListingItem from "../../../components/ListingItem";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
