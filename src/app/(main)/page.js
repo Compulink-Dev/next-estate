@@ -1,4 +1,4 @@
-import ListingItem from "@/components/ListingItem";
+import ListingItem from "../../components/ListingItem";
 import Link from "next/link";
 export default async function Home() {
   let rentListings = null;
