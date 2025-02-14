@@ -15,7 +15,6 @@ export const connect = async () => {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         dbName: "next-estate",
-        useNewUrlParser: true,
       })
       .then((mongoose) => {
         return mongoose;
